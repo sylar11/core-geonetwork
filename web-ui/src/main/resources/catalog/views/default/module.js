@@ -140,6 +140,8 @@
       $scope.location = gnSearchLocation;
       $scope.fluidLayout = gnGlobalSettings.gnCfg.mods.home.fluidLayout;
       $scope.fluidEditorLayout = gnGlobalSettings.gnCfg.mods.editor.fluidEditorLayout;
+      $scope.fluidHeaderLayout = gnGlobalSettings.gnCfg.mods.header.fluidHeaderLayout;
+      $scope.showGNName = gnGlobalSettings.gnCfg.mods.header.showGNName;
       $scope.toggleMap = function () {
         $(searchMap.getTargetElement()).toggle();
         $('button.gn-minimap-toggle > i').toggleClass('fa-angle-double-left fa-angle-double-right');
@@ -219,7 +221,7 @@
       $scope.toggleListType = function(type) {
         $scope.type = type;
       };
-      
+
       $scope.infoTabs = {
         lastRecords: {
           title: 'lastRecords',
@@ -257,7 +259,9 @@
         addMdLayerToMap: function (link, md) {
           var config = {
             uuid: md ? md.getUuid() : null,
-            type: link.protocol.indexOf('WMTS') > -1 ? 'wmts' : 'wms',
+            type:
+              link.protocol.indexOf('WMTS') > -1 ? 'wmts' :
+                ((link.protocol == 'ESRI:REST') || (link.protocol.startsWith('ESRI REST')) ? 'esrirest' : 'wms'),
             url: $filter('gnLocalized')(link.url) || link.url
           };
 
